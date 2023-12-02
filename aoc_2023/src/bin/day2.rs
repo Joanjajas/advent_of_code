@@ -18,15 +18,15 @@ fn part1(input: &str) -> u32 {
     let mut id_sum = 0;
 
     for line in input.lines() {
-        let (id, subsets_list) = line.split_once(":").unwrap();
-        let subsets: Vec<&str> = subsets_list.split(";").collect();
+        let (id, subsets_list) = line.split_once(": ").unwrap();
+        let subsets: Vec<&str> = subsets_list.split("; ").collect();
 
         let mut impossible = false;
         for subset in subsets {
-            let plays: Vec<&str> = subset.split(",").collect();
+            let plays: Vec<&str> = subset.split(", ").collect();
 
             for play in plays {
-                let (quantity, color) = play.trim().split_once(" ").unwrap();
+                let (quantity, color) = play.split_once(" ").unwrap();
                 let quantity: u32 = quantity.parse().unwrap_or(0);
 
                 match color {
@@ -52,7 +52,6 @@ fn part1(input: &str) -> u32 {
 
         if !impossible {
             id_sum += id
-                .trim()
                 .split_whitespace()
                 .last()
                 .unwrap_or("0")
@@ -68,17 +67,17 @@ fn part2(input: &str) -> u32 {
     let mut power_sum = 0;
 
     for line in input.lines() {
-        let (_, subsets_list) = line.split_once(":").unwrap();
+        let (_, subsets_list) = line.split_once(": ").unwrap();
         let plays: Vec<&str> = subsets_list
-            .split(";")
-            .flat_map(|play| play.split(","))
+            .split("; ")
+            .flat_map(|play| play.split(", "))
             .collect();
 
         let mut red_min = 0;
         let mut green_min = 0;
         let mut blue_min = 0;
         for play in plays {
-            let (quantity, color) = play.trim().split_once(" ").unwrap();
+            let (quantity, color) = play.split_once(" ").unwrap();
             let quantity: u32 = quantity.parse().unwrap_or(0);
 
             match color {
