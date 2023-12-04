@@ -2,6 +2,10 @@ use std::fs;
 
 use anyhow::Result;
 
+const MAX_RED: u32 = 12;
+const MAX_GREEN: u32 = 13;
+const MAX_BLUE: u32 = 14;
+
 fn main() -> Result<()> {
     let input = fs::read_to_string("input/day2.txt")?;
 
@@ -31,17 +35,17 @@ fn part1(input: &str) -> u32 {
 
                 match color {
                     "red" => {
-                        if quantity > 12 {
+                        if quantity > MAX_RED {
                             impossible = true
                         }
                     }
                     "green" => {
-                        if quantity > 13 {
+                        if quantity > MAX_GREEN {
                             impossible = true
                         }
                     }
                     "blue" => {
-                        if quantity > 14 {
+                        if quantity > MAX_BLUE {
                             impossible = true
                         }
                     }
