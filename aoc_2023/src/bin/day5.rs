@@ -5,8 +5,8 @@ use anyhow::Result;
 fn main() -> Result<()> {
     let input = fs::read_to_string("input/day5.txt")?;
 
-    let part1 = part1(&input);
-    let part2 = part2(&input);
+    let part1 = part_1(&input);
+    let part2 = part_2(&input);
 
     println!("Part 1: {}", part1);
     println!("Part 2: {}", part2);
@@ -61,7 +61,7 @@ impl Map {
     }
 }
 
-fn part1(input: &str) -> u64 {
+fn part_1(input: &str) -> u64 {
     let (seeds, maps) = parse_input(input);
 
     seeds
@@ -71,7 +71,7 @@ fn part1(input: &str) -> u64 {
         .unwrap()
 }
 
-fn part2(input: &str) -> u64 {
+fn part_2(input: &str) -> u64 {
     let (seeds, maps) = parse_input(input);
     let seed_ranges: Vec<&[u64]> = seeds.chunks(2).collect();
 
@@ -114,82 +114,22 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_part1() {
-        let input = "seeds: 79 14 55 13\n\
-                     \n\
-                     seed-to-soil map:\n\
-                     50 98 2\n\
-                     52 50 48\n\
-                     \n\
-                     soil-to-fertilizer map:\n\
-                     0 15 37\n\
-                     37 52 2\n\
-                     39 0 15\n\
-                     \n\
-                     fertilizer-to-water map:\n\
-                     49 53 8\n\
-                     0 11 42\n\
-                     42 0 7\n\
-                     57 7 4\n\
-                     \n\
-                     water-to-light map:\n\
-                     88 18 7\n\
-                     18 25 70\n\
-                     \n\
-                     light-to-temperature map:\n\
-                     45 77 23\n\
-                     81 45 19\n\
-                     68 64 13\n\
-                     \n\
-                     temperature-to-humidity map:\n\
-                     0 69 1\n\
-                     1 0 69\n\
-                     \n\
-                     humidity-to-location map:\n\
-                     60 56 37\n\
-                     56 93 4";
+    fn test_part1() -> Result<()> {
+        let input = fs::read_to_string("input/test/day5.txt")?;
 
-        let result = part1(input);
+        let result = part_1(&input);
         assert_eq!(result, 35);
+
+        Ok(())
     }
 
     #[test]
-    fn test_part2() {
-        let input = "seeds: 79 14 55 13\n\
-                     \n\
-                     seed-to-soil map:\n\
-                     50 98 2\n\
-                     52 50 48\n\
-                     \n\
-                     soil-to-fertilizer map:\n\
-                     0 15 37\n\
-                     37 52 2\n\
-                     39 0 15\n\
-                     \n\
-                     fertilizer-to-water map:\n\
-                     49 53 8\n\
-                     0 11 42\n\
-                     42 0 7\n\
-                     57 7 4\n\
-                     \n\
-                     water-to-light map:\n\
-                     88 18 7\n\
-                     18 25 70\n\
-                     \n\
-                     light-to-temperature map:\n\
-                     45 77 23\n\
-                     81 45 19\n\
-                     68 64 13\n\
-                     \n\
-                     temperature-to-humidity map:\n\
-                     0 69 1\n\
-                     1 0 69\n\
-                     \n\
-                     humidity-to-location map:\n\
-                     60 56 37\n\
-                     56 93 4";
+    fn test_part2() -> Result<()> {
+        let input = fs::read_to_string("input/test/day5.txt")?;
 
-        let result = part2(input);
+        let result = part_2(&input);
         assert_eq!(result, 46);
+
+        Ok(())
     }
 }

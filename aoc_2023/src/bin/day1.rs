@@ -10,8 +10,8 @@ const DIGITS: [&str; 18] = [
 fn main() -> Result<()> {
     let input = fs::read_to_string("input/day1.txt")?;
 
-    let part1 = part1(&input);
-    let part2 = part2(&input);
+    let part1 = part_1(&input);
+    let part2 = part_2(&input);
 
     println!("Part 1: {}", part1);
     println!("Part 2: {}", part2);
@@ -19,7 +19,7 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn part1(input: &str) -> u32 {
+fn part_1(input: &str) -> u32 {
     input
         .lines()
         .map(|line| {
@@ -29,7 +29,7 @@ fn part1(input: &str) -> u32 {
         .sum()
 }
 
-fn part2(input: &str) -> u32 {
+fn part_2(input: &str) -> u32 {
     input
         .lines()
         .map(|line| {
@@ -82,27 +82,22 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_part1() {
-        let input = "1abc2
-                     pqr3stu8vwx
-                     a1b2c3d4e5f
-                     treb7uchet";
+    fn test_part_1() -> Result<()> {
+        let input = fs::read_to_string("input/test/day1_part_1.txt")?;
 
-        let result = part1(&input);
+        let result = part_1(&input);
         assert_eq!(result, 142);
+
+        Ok(())
     }
 
     #[test]
-    fn test_part2() {
-        let input = "two1nine
-                     eightwothree
-                     abcone2threexyz
-                     xtwone3four
-                     4nineeightseven2
-                     zoneight234
-                     7pqrstsixteen";
+    fn test_part_2() -> Result<()> {
+        let input = fs::read_to_string("input/test/day1_part_2.txt")?;
 
-        let result = part2(&input);
+        let result = part_2(&input);
         assert_eq!(result, 281);
+
+        Ok(())
     }
 }

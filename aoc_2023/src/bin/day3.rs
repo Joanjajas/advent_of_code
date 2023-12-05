@@ -31,8 +31,8 @@ impl<'a> Symbol<'a> {
 fn main() -> Result<()> {
     let input = fs::read_to_string("input/day3.txt")?;
 
-    let part1 = part1(&input);
-    let part2 = part2(&input);
+    let part1 = part_1(&input);
+    let part2 = part_2(&input);
 
     println!("Part 1: {}", part1);
     println!("Part 2: {}", part2);
@@ -40,7 +40,7 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn part1(input: &str) -> i32 {
+fn part_1(input: &str) -> i32 {
     let (mut numbers, symbols) = parse_input(input);
 
     symbols
@@ -58,7 +58,7 @@ fn part1(input: &str) -> i32 {
         .sum()
 }
 
-fn part2(input: &str) -> i32 {
+fn part_2(input: &str) -> i32 {
     let (mut numbers, mut symbols) = parse_input(input);
 
     for symbol in symbols.iter_mut() {
@@ -127,36 +127,22 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_part1() {
-        let input = "467..114..\n\
-                     ...*......\n\
-                     ..35..633.\n\
-                     ......#...\n\
-                     617*......\n\
-                     .....+.58.\n\
-                     ..592.....\n\
-                     ......755.\n\
-                     ...$.*....\n\
-                     .664.598..";
+    fn test_part_1() -> Result<()> {
+        let input = fs::read_to_string("input/test/day3.txt")?;
 
-        let result = part1(input);
+        let result = part_1(&input);
         assert_eq!(result, 4361);
+
+        Ok(())
     }
 
     #[test]
-    fn test_part2() {
-        let input = "467..114..\n\
-                     ...*......\n\
-                     ..35..633.\n\
-                     ......#...\n\
-                     617*......\n\
-                     .....+.58.\n\
-                     ..592.....\n\
-                     ......755.\n\
-                     ...$.*....\n\
-                     .664.598..";
+    fn test_part_2() -> Result<()> {
+        let input = fs::read_to_string("input/test/day3.txt")?;
 
-        let result = part2(input);
+        let result = part_2(&input);
         assert_eq!(result, 467835);
+
+        Ok(())
     }
 }
