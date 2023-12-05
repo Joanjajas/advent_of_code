@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fs};
+use std::fs;
 
 use anyhow::Result;
 
@@ -50,7 +50,7 @@ fn part1(input: &str) -> u32 {
 }
 
 fn part2(input: &str) -> u32 {
-    let mut cards: HashMap<u32, u32> = HashMap::new();
+    let mut cards = vec![0; input.lines().count() + 1];
 
     for line in input.lines() {
         let (card_number, numbers) = line.split_once(": ").unwrap();
@@ -60,7 +60,7 @@ fn part2(input: &str) -> u32 {
             .split_whitespace()
             .last()
             .unwrap()
-            .parse::<u32>()
+            .parse::<usize>()
             .unwrap();
 
         let wining_numbers: Vec<u32> = wining_numbers
@@ -76,24 +76,15 @@ fn part2(input: &str) -> u32 {
         let matches = my_numbers
             .iter()
             .filter(|n| wining_numbers.contains(n))
-            .count() as u32;
+            .count() as usize;
 
-        if cards.get(&card_number).is_none() {
-            cards.insert(card_number, 0);
-        }
-
-        cards.entry(card_number).and_modify(|e| *e += 1);
-        let current_card_copies = cards.get(&card_number).unwrap_or(&0).clone();
-
-        for i in card_number + 1..=card_number + matches {
-            if cards.get(&i).is_none() {
-                cards.insert(i, 0);
-            }
-            cards.entry(i).and_modify(|e| *e += current_card_copies);
+        cards[card_number] += 1;
+        for i in 1..=matches {
+            cards[card_number + i] += cards[card_number];
         }
     }
 
-    cards.iter().map(|(_, e)| e).sum()
+    cards.iter().sum()
 }
 
 #[cfg(test)]
