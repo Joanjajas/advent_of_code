@@ -27,15 +27,15 @@ struct Range {
 }
 
 impl Map {
-    fn from_str(input: &str) -> Self {
-        let ranges = input
+    fn from_block(block: &str) -> Self {
+        let ranges = block
             .lines()
             .skip(1)
             .map(|line| {
-                let mut parts = line.split_whitespace();
-                let dest_range_start = parts.next().unwrap().parse().unwrap();
-                let source_range_start = parts.next().unwrap().parse().unwrap();
-                let range_length = parts.next().unwrap().parse().unwrap();
+                let mut values = line.split_whitespace();
+                let dest_range_start = values.next().unwrap().parse().unwrap();
+                let source_range_start = values.next().unwrap().parse().unwrap();
+                let range_length = values.next().unwrap().parse().unwrap();
 
                 Range {
                     dest_range_start,
@@ -49,20 +49,15 @@ impl Map {
     }
 
     fn map_value(&self, value: u64) -> u64 {
-        let mut result = 0;
-
-        for range in &self.ranges {
-            if value >= range.source_range_start
-                && value < range.source_range_start + range.range_length
-            {
-                result = range.dest_range_start + (value - range.source_range_start);
-                break;
-            } else {
-                result = value;
-            }
-        }
-
-        result
+        self.ranges
+            .iter()
+            .find(|range| {
+                let lower_bound = range.source_range_start;
+                let upper_bound = range.source_range_start + range.range_length;
+                lower_bound <= value && value <= upper_bound
+            })
+            .map(|range| range.dest_range_start + (value - range.source_range_start))
+            .unwrap_or(value)
     }
 }
 
@@ -71,20 +66,14 @@ fn part1(input: &str) -> u64 {
 
     seeds
         .iter()
-        .map(|seed| {
-            let mut value = *seed;
-            for map in &maps {
-                value = map.map_value(value);
-            }
-            value
-        })
+        .map(|seed| maps.iter().fold(*seed, |acc, map| map.map_value(acc)))
         .min()
         .unwrap()
 }
 
 fn part2(input: &str) -> u64 {
     let (seeds, maps) = parse_input(input);
-    let seed_ranges = seeds.chunks(2).collect::<Vec<_>>();
+    let seed_ranges: Vec<&[u64]> = seeds.chunks(2).collect();
 
     seed_ranges
         .iter()
@@ -106,30 +95,17 @@ fn part2(input: &str) -> u64 {
 }
 
 fn parse_input(input: &str) -> (Vec<u64>, Vec<Map>) {
-    let seeds: Vec<u64> = input
-        .lines()
+    let mut blocks = input.split("\n\n");
+    let seeds = blocks
         .next()
         .unwrap()
         .trim_start_matches("seeds: ")
         .split_whitespace()
-        .map(|x| x.parse().unwrap())
+        .map(|s| s.parse().unwrap())
         .collect();
 
-    let mut map = String::new();
-    let mut maps: Vec<Map> = Vec::new();
+    let maps = blocks.map(|block| Map::from_block(block)).collect();
 
-    for line in input.lines().skip(2) {
-        if line.trim().is_empty() {
-            maps.push(Map::from_str(&map));
-            map = String::new();
-        } else {
-            map.push_str(line);
-            map.push('\n');
-        }
-    }
-
-    // add the last line
-    maps.push(Map::from_str(&map));
     (seeds, maps)
 }
 
