@@ -15,27 +15,22 @@ fn main() -> Result<()> {
 }
 
 fn part_1(input: &str) -> u64 {
-    let (times, record_distances) = parse_input(input);
-    let mut possible_wins = vec![0; times.len()];
+    let (race_durations, record_distances) = parse_input(input);
+    let mut possible_wins = vec![0; race_durations.len()];
 
-    for (index, (time, record_distance)) in times.iter().zip(record_distances).enumerate() {
-        for i in 0..*time {
-            let speed = i;
-            let distance = speed * (time - i);
-
-            if distance > record_distance {
-                possible_wins[index] += 1;
-            }
-        }
+    for (index, (race_duration, record_distance)) in
+        race_durations.iter().zip(record_distances).enumerate()
+    {
+        possible_wins[index] = calculate_possible_wins(*race_duration, record_distance);
     }
 
     possible_wins.iter().fold(1, |acc, x| acc * x)
 }
 
 fn part_2(input: &str) -> u64 {
-    let (times, record_distances) = parse_input(input);
+    let (race_durations, record_distances) = parse_input(input);
 
-    let time = times
+    let race_duration = race_durations
         .iter()
         .map(|x| x.to_string())
         .fold(String::from(""), |mut acc, x| {
@@ -55,21 +50,26 @@ fn part_2(input: &str) -> u64 {
         .parse()
         .unwrap();
 
-    let mut possible_wins = 0;
-    for i in 0..time {
-        let speed = i;
-        let distance = speed * (time - i);
+    calculate_possible_wins(race_duration, record_distance)
+}
 
-        if distance > record_distance {
-            possible_wins += 1;
-        }
-    }
+fn calculate_possible_wins(race_duration: u64, record_distance: u64) -> u64 {
+    let left_index = (0..race_duration)
+        .into_iter()
+        .find(|i| i * (race_duration - i) > record_distance)
+        .unwrap();
 
-    possible_wins
+    let right_index = (0..race_duration)
+        .into_iter()
+        .rev()
+        .find(|i| i * (race_duration - i) > record_distance)
+        .unwrap();
+
+    right_index - left_index + 1
 }
 
 fn parse_input(input: &str) -> (Vec<u64>, Vec<u64>) {
-    let times: Vec<u64> = input
+    let race_durations: Vec<u64> = input
         .lines()
         .next()
         .unwrap()
@@ -90,7 +90,7 @@ fn parse_input(input: &str) -> (Vec<u64>, Vec<u64>) {
         .map(|x| x.parse().unwrap())
         .collect();
 
-    (times, record_distances)
+    (race_durations, record_distances)
 }
 
 #[cfg(test)]
