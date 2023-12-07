@@ -104,7 +104,7 @@ fn parse_input(input: &str) -> (Vec<u64>, Vec<Map>) {
         .map(|s| s.parse().unwrap())
         .collect();
 
-    let maps = blocks.map(|block| Map::from_block(block)).collect();
+    let maps = blocks.map(Map::from_block).collect();
 
     (seeds, maps)
 }

@@ -23,7 +23,7 @@ fn part_1(input: &str) -> u32 {
     input
         .lines()
         .map(|line| {
-            let str_digits: String = line.chars().filter(|c| c.is_digit(10)).collect();
+            let str_digits: String = line.chars().filter(|c| c.is_ascii_digit()).collect();
             extract_calibration_value(str_digits)
         })
         .sum()

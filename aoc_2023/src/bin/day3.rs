@@ -48,7 +48,7 @@ fn part_1(input: &str) -> i32 {
         .map(|s| {
             numbers
                 .iter_mut()
-                .filter(|n| is_adjacent(s, n) && n.visited == false)
+                .filter(|n| is_adjacent(s, n) && !n.visited)
                 .map(|n| {
                     n.visited = true;
                     n.value
@@ -63,7 +63,7 @@ fn part_2(input: &str) -> i32 {
 
     for symbol in symbols.iter_mut() {
         for number in numbers.iter_mut() {
-            if is_adjacent(symbol, number) && number.visited == false {
+            if is_adjacent(symbol, number) && !number.visited {
                 symbol.add_adjacent(number.value);
                 number.visited = true;
             }
@@ -73,7 +73,7 @@ fn part_2(input: &str) -> i32 {
     symbols
         .iter()
         .filter(|x| x.adjacent_nums.len() == 2)
-        .map(|x| x.adjacent_nums.iter().fold(1, |acc, x| acc * x))
+        .map(|x| x.adjacent_nums.iter().product::<i32>())
         .sum()
 }
 

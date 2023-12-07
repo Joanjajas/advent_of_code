@@ -76,7 +76,7 @@ fn part_2(input: &str) -> u32 {
         let matches = my_numbers
             .iter()
             .filter(|n| wining_numbers.contains(n))
-            .count() as usize;
+            .count();
 
         cards[card_number] += 1;
         for i in 1..=matches {

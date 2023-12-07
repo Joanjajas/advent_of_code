@@ -24,7 +24,7 @@ fn part_1(input: &str) -> u64 {
         possible_wins[index] = calculate_possible_wins(*race_duration, record_distance);
     }
 
-    possible_wins.iter().fold(1, |acc, x| acc * x)
+    possible_wins.iter().product::<u64>()
 }
 
 fn part_2(input: &str) -> u64 {
@@ -55,12 +55,10 @@ fn part_2(input: &str) -> u64 {
 
 fn calculate_possible_wins(race_duration: u64, record_distance: u64) -> u64 {
     let left_index = (0..race_duration)
-        .into_iter()
         .find(|i| i * (race_duration - i) > record_distance)
         .unwrap();
 
     let right_index = (0..race_duration)
-        .into_iter()
         .rev()
         .find(|i| i * (race_duration - i) > record_distance)
         .unwrap();
@@ -75,18 +73,14 @@ fn parse_input(input: &str) -> (Vec<u64>, Vec<u64>) {
         .unwrap()
         .trim_start_matches("Time: ")
         .split_whitespace()
-        .into_iter()
         .map(|x| x.parse().unwrap())
         .collect();
 
     let record_distances: Vec<u64> = input
-        .lines()
-        .skip(1)
-        .next()
+        .lines().nth(1)
         .unwrap()
         .trim_start_matches("Distance: ")
         .split_whitespace()
-        .into_iter()
         .map(|x| x.parse().unwrap())
         .collect();
 

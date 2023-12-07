@@ -30,7 +30,7 @@ fn part_1(input: &str) -> u32 {
             let plays: Vec<&str> = subset.split(", ").collect();
 
             for play in plays {
-                let (quantity, color) = play.split_once(" ").unwrap();
+                let (quantity, color) = play.split_once(' ').unwrap();
                 let quantity: u32 = quantity.parse().unwrap_or(0);
 
                 match color {
@@ -81,7 +81,7 @@ fn part_2(input: &str) -> u32 {
         let mut green_min = 0;
         let mut blue_min = 0;
         for play in plays {
-            let (quantity, color) = play.split_once(" ").unwrap();
+            let (quantity, color) = play.split_once(' ').unwrap();
             let quantity: u32 = quantity.parse().unwrap_or(0);
 
             match color {
