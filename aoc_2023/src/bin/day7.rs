@@ -20,7 +20,7 @@ enum Card {
     A,
     K,
     Q,
-    J,
+    J(bool),
     T,
     N(u8),
 }
@@ -42,12 +42,12 @@ enum HandType {
 }
 
 impl Card {
-    fn from_char(c: char) -> Self {
+    fn from_char(c: char, joker: bool) -> Self {
         match c {
             'A' => Card::A,
             'K' => Card::K,
             'Q' => Card::Q,
-            'J' => Card::J,
+            'J' => Card::J(joker),
             'T' => Card::T,
             _ => Card::N(c.to_digit(10).unwrap() as u8),
         }
@@ -55,9 +55,9 @@ impl Card {
 }
 
 impl Hand {
-    fn from_str(hand: &str) -> Self {
+    fn from_str(hand: &str, joker: bool) -> Self {
         Hand {
-            cards: hand.chars().map(Card::from_char).collect(),
+            cards: hand.chars().map(|x| Card::from_char(x, joker)).collect(),
         }
     }
 }
@@ -77,15 +77,16 @@ impl PartialOrd for Card {
             (Card::Q, _) => Some(Ordering::Greater),
             (_, Card::Q) => Some(Ordering::Less),
 
+            (Card::J(false), _) => Some(Ordering::Greater),
+            (_, Card::J(false)) => Some(Ordering::Less),
+            (Card::J(true), _) => Some(Ordering::Less),
+
             (Card::T, Card::T) => Some(Ordering::Equal),
             (Card::T, _) => Some(Ordering::Greater),
             (_, Card::T) => Some(Ordering::Less),
 
             (Card::N(a), Card::N(b)) => a.partial_cmp(b),
             (Card::N(_), _) => Some(Ordering::Greater),
-            (_, Card::N(_)) => Some(Ordering::Less),
-
-            (Card::J, Card::J) => Some(Ordering::Equal),
         }
     }
 }
@@ -105,7 +106,7 @@ impl HandType {
             }
 
             if jokers == 5 {
-                return HandType::FiveOfAKind(Hand::from_str(hand));
+                return HandType::FiveOfAKind(Hand::from_str(hand, joker));
             }
 
             let max = map
@@ -124,23 +125,23 @@ impl HandType {
         }
 
         match map.len() {
-            1 => HandType::FiveOfAKind(Hand::from_str(hand)),
+            1 => HandType::FiveOfAKind(Hand::from_str(hand, joker)),
             2 => {
                 if map.values().any(|&v| v == 4) {
-                    HandType::FourOfAKind(Hand::from_str(hand))
+                    HandType::FourOfAKind(Hand::from_str(hand, joker))
                 } else {
-                    HandType::FullHouse(Hand::from_str(hand))
+                    HandType::FullHouse(Hand::from_str(hand, joker))
                 }
             }
             3 => {
                 if map.values().any(|&v| v == 3) {
-                    HandType::ThreeOfAKind(Hand::from_str(hand))
+                    HandType::ThreeOfAKind(Hand::from_str(hand, joker))
                 } else {
-                    HandType::TwoPair(Hand::from_str(hand))
+                    HandType::TwoPair(Hand::from_str(hand, joker))
                 }
             }
-            4 => HandType::OnePair(Hand::from_str(hand)),
-            _ => HandType::HighCard(Hand::from_str(hand)),
+            4 => HandType::OnePair(Hand::from_str(hand, joker)),
+            _ => HandType::HighCard(Hand::from_str(hand, joker)),
         }
     }
 }
