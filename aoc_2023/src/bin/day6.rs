@@ -77,7 +77,8 @@ fn parse_input(input: &str) -> (Vec<u64>, Vec<u64>) {
         .collect();
 
     let record_distances: Vec<u64> = input
-        .lines().nth(1)
+        .lines()
+        .nth(1)
         .unwrap()
         .trim_start_matches("Distance: ")
         .split_whitespace()
@@ -92,7 +93,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_part1() -> Result<()> {
+    fn test_part_1() -> Result<()> {
         let input = fs::read_to_string("input/test/day6.txt")?;
 
         let result = part_1(&input);
@@ -102,7 +103,7 @@ mod tests {
     }
 
     #[test]
-    fn test_part2() -> Result<()> {
+    fn test_part_2() -> Result<()> {
         let input = fs::read_to_string("input/test/day6.txt")?;
 
         let result = part_2(&input);

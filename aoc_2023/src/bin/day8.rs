@@ -105,7 +105,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_part1() -> Result<()> {
+    fn test_part_1() -> Result<()> {
         let input_1 = fs::read_to_string("input/test/day8_part_1_1.txt")?;
         let input_2 = fs::read_to_string("input/test/day8_part_1_2.txt")?;
 
@@ -119,7 +119,7 @@ mod tests {
     }
 
     #[test]
-    fn test_part2() -> Result<()> {
+    fn test_part_2() -> Result<()> {
         let input = fs::read_to_string("input/test/day8_part_2.txt")?;
 
         let result = part_2(&input);

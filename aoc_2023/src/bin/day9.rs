@@ -69,7 +69,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_part1() -> Result<()> {
+    fn test_part_1() -> Result<()> {
         let input = fs::read_to_string("input/test/day9.txt")?;
 
         let result = part_1(&input);
@@ -79,11 +79,11 @@ mod tests {
     }
 
     #[test]
-    fn test_part2() -> Result<()> {
+    fn test_part_2() -> Result<()> {
         let input = fs::read_to_string("input/test/day9.txt")?;
 
         let result = part_2(&input);
-        assert_eq!(result, 6);
+        assert_eq!(result, 2);
 
         Ok(())
     }
