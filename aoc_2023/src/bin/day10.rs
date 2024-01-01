@@ -3,7 +3,7 @@ use std::fs;
 use anyhow::Result;
 
 fn main() -> Result<()> {
-    let input = fs::read_to_string("input/test/day10_part2_1.txt")?;
+    let input = fs::read_to_string("input/day10.txt")?;
 
     let part1 = part_1(&input);
     let part2 = part_2(&input);
